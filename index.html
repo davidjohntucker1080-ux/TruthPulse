@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tell">
+<meta name="description" content="A lie detection game that doubles as a real experiment.">
+<title>Tell</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400;62..125,500;62..125,600;62..125,800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="bar">
+    <button class="logo" id="goHome" type="button" aria-label="Tell home">Tell</button>
+    <span class="tag">lie lab</span>
+  </header>
+
+  <div class="cam" id="cam" hidden>
+    <video id="video" playsinline muted autoplay></video>
+    <div class="badge" id="faceBadge">Camera off</div>
+  </div>
+
+  <main>
+    <!-- HOME -->
+    <section data-screen="home" class="stack">
+      <h1 class="hero">Can a camera catch a lie that people miss?</h1>
+      <p class="lede">Tell is a two-player game and a real experiment. One person answers questions after being secretly told to lie or tell the truth. The other person guesses. Tell measures tiny face movements and learns, game after game, whether lies leave a trace.</p>
+      <div class="stats" id="homeStats"></div>
+      <button class="btn primary" id="startBtn" type="button">Start a game</button>
+      <button class="btn" id="labBtn" type="button">See lab results</button>
+      <details class="data" id="dataBox">
+        <summary>Your data</summary>
+        <p>Tell never saves video or sound. It saves face-movement numbers on this phone only, and nothing is uploaded. To combine games from other phones, export the data on each phone and import the files here.</p>
+        <div class="row">
+          <button class="btn small" id="exportBtn" type="button">Export data</button>
+          <label class="btn small" for="importFile">Import data</label>
+          <input type="file" id="importFile" accept="application/json,.json" multiple hidden>
+          <button class="btn small danger" id="wipeBtn" type="button">Delete all data</button>
+        </div>
+        <p class="hint" id="dataMsg"></p>
+      </details>
+    </section>
+
+    <!-- SETUP -->
+    <section data-screen="setup" class="stack" hidden>
+      <h2>New game</h2>
+      <label class="field"><span>Who's answering?</span><input id="answerer" autocomplete="off" maxlength="40" placeholder="Name"></label>
+      <label class="field"><span>Who's guessing?</span><input id="guesser" autocomplete="off" maxlength="40" placeholder="Name"></label>
+      <fieldset class="field">
+        <legend>Number of questions</legend>
+        <div class="seg" id="roundsSeg">
+          <button type="button" data-n="6">6</button>
+          <button type="button" data-n="10" aria-pressed="true">10</button>
+          <button type="button" data-n="16">16</button>
+        </div>
+      </fieldset>
+      <label class="check"><input type="checkbox" id="consent"><span>Both players agree to have their face movements measured for this experiment. No video or sound is saved.</span></label>
+      <button class="btn" id="camBtn" type="button">Turn on camera</button>
+      <p class="hint" id="setupMsg">Use the front camera and hold the phone at face height.</p>
+      <button class="btn primary" id="beginBtn" type="button" disabled>Begin</button>
+    </section>
+
+    <!-- HANDOFF -->
+    <section data-screen="handoff" class="stack center" hidden>
+      <p class="eyebrow" id="handoffCount"></p>
+      <h2 id="handoffTitle"></h2>
+      <p id="handoffText"></p>
+      <button class="btn primary" id="revealBtn" type="button"></button>
+    </section>
+
+    <!-- SECRET INSTRUCTION -->
+    <section data-screen="instruction" class="stack center" hidden>
+      <p class="eyebrow">Only you can see this</p>
+      <div class="verdict" id="instrWord"></div>
+      <p id="instrHow"></p>
+      <blockquote class="question" id="instrQ"></blockquote>
+      <p class="hint">Hold the phone at face height. Tap Start, read the question out loud, then answer it.</p>
+      <button class="btn primary" id="recBtn" type="button">Start answering</button>
+    </section>
+
+    <!-- RECORDING -->
+    <section data-screen="record" class="stack" hidden>
+      <div class="recrow"><span class="dot" aria-hidden="true"></span><span>Measuring face movements</span><span class="mono" id="recTime">0.0 s</span></div>
+      <blockquote class="question big" id="recQ"></blockquote>
+      <canvas id="trace" class="trace" aria-label="Live face activity trace"></canvas>
+      <div class="meters" id="meters"></div>
+      <p class="hint">Live readings only. Tell doesn't decide anything until after the guess.</p>
+      <button class="btn primary" id="doneBtn" type="button">Done answering</button>
+    </section>
+
+    <!-- GUESS -->
+    <section data-screen="guess" class="stack center" hidden>
+      <h2 id="guessTitle"></h2>
+      <p id="guessText"></p>
+      <p class="hint warn" id="guessWarn" hidden></p>
+      <div class="pair">
+        <button class="btn truth" id="gTruth" type="button">Truth</button>
+        <button class="btn lie" id="gLie" type="button">Lie</button>
+      </div>
+      <button class="link" id="gSkip" type="button">Skip guessing</button>
+    </section>
+
+    <!-- REVEAL -->
+    <section data-screen="reveal" class="stack center" hidden>
+      <p class="eyebrow">The answer was</p>
+      <div class="verdict" id="revWord"></div>
+      <div class="cards">
+        <div class="card"><span class="who" id="revHumanWho"></span><b id="revHuman"></b></div>
+        <div class="card"><span class="who">Tell</span><b id="revAI"></b></div>
+      </div>
+      <p class="score mono" id="revScore"></p>
+      <button class="btn primary" id="nextBtn" type="button">Next question</button>
+    </section>
+
+    <!-- SUMMARY -->
+    <section data-screen="summary" class="stack center" hidden>
+      <h2>Game over</h2>
+      <div class="cards" id="sumCards"></div>
+      <p id="sumText"></p>
+      <button class="btn primary" id="swapBtn" type="button">Swap roles and play again</button>
+      <button class="btn" id="sumLab" type="button">See lab results</button>
+      <button class="btn" id="sumHome" type="button">Home</button>
+    </section>
+
+    <!-- LAB -->
+    <section data-screen="lab" class="stack" hidden>
+      <h2>Lab results</h2>
+      <p class="lede">Everything here comes from games saved on this phone, plus any data you've imported.</p>
+      <div id="labBody" class="stack"></div>
+      <button class="btn" id="labHome" type="button">Home</button>
+    </section>
+  </main>
+</div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
