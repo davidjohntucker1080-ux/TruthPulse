@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Tell">
+<meta name="apple-mobile-web-app-title" content="TruthPulse">
 <meta name="description" content="A lie detection game that doubles as a real experiment.">
-<title>Tell</title>
+<title>TruthPulse</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,7 @@
 <body>
 <div class="wrap">
   <header class="bar">
-    <button class="logo" id="goHome" type="button" aria-label="Tell home">Tell</button>
+    <button class="logo" id="goHome" type="button" aria-label="TruthPulse home">TruthPulse</button>
     <span class="tag">lie lab</span>
   </header>
 
@@ -30,13 +30,13 @@
     <!-- HOME -->
     <section data-screen="home" class="stack">
       <h1 class="hero">Can a camera catch a lie that people miss?</h1>
-      <p class="lede">Tell is a two-player game and a real experiment. One person answers questions after being secretly told to lie or tell the truth. The other person guesses. Tell measures tiny face movements and learns, game after game, whether lies leave a trace.</p>
+      <p class="lede">TruthPulse is a two-player game and a real experiment. One person answers questions after being secretly told to lie or tell the truth. The other person guesses. TruthPulse measures tiny face movements and learns, game after game, whether lies leave a trace.</p>
       <div class="stats" id="homeStats"></div>
       <button class="btn primary" id="startBtn" type="button">Start a game</button>
       <button class="btn" id="labBtn" type="button">See lab results</button>
       <details class="data" id="dataBox">
         <summary>Your data</summary>
-        <p>Tell never saves video or sound. It saves face-movement numbers on this phone only, and nothing is uploaded. To combine games from other phones, export the data on each phone and import the files here.</p>
+        <p>TruthPulse never saves video or sound. It saves face-movement numbers on this phone only, and nothing is uploaded. To combine games from other phones, export the data on each phone and import the files here.</p>
         <div class="row">
           <button class="btn small" id="exportBtn" type="button">Export data</button>
           <label class="btn small" for="importFile">Import data</label>
@@ -90,7 +90,7 @@
       <blockquote class="question big" id="recQ"></blockquote>
       <canvas id="trace" class="trace" aria-label="Live face activity trace"></canvas>
       <div class="meters" id="meters"></div>
-      <p class="hint">Live readings only. Tell doesn't decide anything until after the guess.</p>
+      <p class="hint">Live readings only. TruthPulse doesn't decide anything until after the guess.</p>
       <button class="btn primary" id="doneBtn" type="button">Done answering</button>
     </section>
 
@@ -112,7 +112,7 @@
       <div class="verdict" id="revWord"></div>
       <div class="cards">
         <div class="card"><span class="who" id="revHumanWho"></span><b id="revHuman"></b></div>
-        <div class="card"><span class="who">Tell</span><b id="revAI"></b></div>
+        <div class="card"><span class="who">TruthPulse</span><b id="revAI"></b></div>
       </div>
       <p class="score mono" id="revScore"></p>
       <button class="btn primary" id="nextBtn" type="button">Next question</button>

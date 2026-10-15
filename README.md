@@ -1,6 +1,6 @@
-# Tell
+# TruthPulse
 
-Tell is a two-player lie detection game and a real experiment. It asks one question: **can a computer reading tiny face movements spot lies better than chance on people it has never seen?**
+TruthPulse is a two-player lie detection game and a real experiment. It asks one question: **can a computer reading tiny face movements spot lies better than chance on people it has never seen?**
 
 Play it on a phone: open the GitHub Pages link in Safari or Chrome, then tap Share → Add to Home Screen.
 
@@ -9,14 +9,14 @@ Play it on a phone: open the GitHub Pages link in Safari or Chrome, then tap Sha
 1. One player answers and one player guesses.
 2. Before each question, the answerer privately sees **TRUTH** or **LIE**. Each game has the same number of each, in random order.
 3. The answerer reads the question out loud and answers it while the front camera tracks their face.
-4. The guesser makes a call, then Tell reveals the answer.
-5. Once Tell has learned from other people, it makes its own guess after the human does.
+4. The guesser makes a call, then TruthPulse reveals the answer.
+5. Once TruthPulse has learned from other people, it makes its own guess after the human does.
 
 Because the app assigned every truth and lie, we always know the right answer. This "ground truth" is what most real-world lie detection data lacks.
 
 ## What gets measured
 
-Tell uses [MediaPipe Face Landmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker), which runs entirely on the phone. About 30 times a second, while the person answers, Tell records:
+TruthPulse uses [MediaPipe Face Landmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker), which runs entirely on the phone. About 30 times a second, while the person answers, TruthPulse records:
 
 - 52 facial movement scores, such as blinks, eye direction, brow raises, lip presses, smiles and jaw movement
 - Head angles: turning, nodding and tilting

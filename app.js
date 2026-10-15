@@ -229,7 +229,7 @@ $("importFile").onchange = async e => {
     } catch { bad++; }
   }
   e.target.value = "";
-  $("dataMsg").textContent = (added ? `Imported ${added} answers.` : "No answers were imported.") + (bad ? ` ${bad} file(s) weren't Tell data.` : "");
+  $("dataMsg").textContent = (added ? `Imported ${added} answers.` : "No answers were imported.") + (bad ? ` ${bad} file(s) weren't TruthPulse data.` : "");
   renderHome();
   $("dataBox").open = true;
 };
@@ -372,7 +372,7 @@ function finishAnswer() {
   const seen = r.frames.filter(f => f.b).length;
   const warn = $("guessWarn");
   warn.hidden = seen >= 10;
-  warn.textContent = "Tell couldn't see the face well during that answer, so it won't count toward the experiment.";
+  warn.textContent = "TruthPulse couldn't see the face well during that answer, so it won't count toward the experiment.";
   $("guessTitle").textContent = `${game.guesser}, your call`;
   $("guessText").textContent = `Take the phone back. Was ${game.answerer} telling the truth or lying?`;
   show("guess");
@@ -423,7 +423,7 @@ async function onGuess(guess) {
 
   const parts = [];
   if (game.human.n) parts.push(`${esc(game.guesser)} ${game.human.right}/${game.human.n}`);
-  if (game.ai.n) parts.push(`Tell ${game.ai.right}/${game.ai.n}`);
+  if (game.ai.n) parts.push(`TruthPulse ${game.ai.right}/${game.ai.n}`);
   $("revScore").innerHTML = parts.join(" &nbsp;·&nbsp; ");
   $("nextBtn").textContent = game.i + 1 < game.total ? "Next question" : "See results";
   show("reveal");
@@ -439,7 +439,7 @@ function showSummary() {
   const h = game.human, a = game.ai;
   $("sumCards").innerHTML =
     `<div class="card"><span class="who">${esc(game.guesser)}</span><span class="big">${h.n ? pct(h.right / h.n) : "–"}</span><span class="hint">${h.right} of ${h.n} right</span></div>` +
-    `<div class="card"><span class="who">Tell</span><span class="big">${a.n ? pct(a.right / a.n) : "–"}</span><span class="hint">${a.n ? `${a.right} of ${a.n} right` : "Not guessing yet"}</span></div>`;
+    `<div class="card"><span class="who">TruthPulse</span><span class="big">${a.n ? pct(a.right / a.n) : "–"}</span><span class="hint">${a.n ? `${a.right} of ${a.n} right` : "Not guessing yet"}</span></div>`;
   $("sumText").textContent = "One game is far too small to prove anything either way. Every answer you play adds to the experiment, so swap roles and keep going.";
   $("swapBtn").textContent = `Swap: ${game.guesser} answers, ${game.answerer} guesses`;
   show("summary");
@@ -453,9 +453,9 @@ $("labHome").onclick = renderHome;
 
 function verdictText(m) {
   if (m.n < 40) return "Too few answers to tell skill from luck. Keep playing.";
-  if (m.acc > 0.5 && m.p < 0.01) return "Tell is beating a coin flip on people it never trained on. That's a real signal. Confirm it with more new people before calling it a discovery.";
+  if (m.acc > 0.5 && m.p < 0.01) return "TruthPulse is beating a coin flip on people it never trained on. That's a real signal. Confirm it with more new people before calling it a discovery.";
   if (m.acc > 0.5 && m.p < 0.05) return "Promising, but this could still be luck. Keep collecting.";
-  return "So far Tell is no better than a coin flip on new people.";
+  return "So far TruthPulse is no better than a coin flip on new people.";
 }
 
 async function renderLab() {
@@ -480,9 +480,9 @@ async function renderLab() {
     : `<p>No guesses yet.</p>`;
   html += `</div>`;
 
-  html += `<div class="panel"><h3>Tell, tested on people it never saw</h3>`;
+  html += `<div class="panel"><h3>TruthPulse, tested on people it never saw</h3>`;
   if (m.status === "need-data") {
-    html += `<p>Tell needs at least 3 people with ${A.MIN_PER_PERSON} or more clear answers each, including both truths and lies, before it can be tested fairly. So far: ${m.people}.</p>`;
+    html += `<p>TruthPulse needs at least 3 people with ${A.MIN_PER_PERSON} or more clear answers each, including both truths and lies, before it can be tested fairly. So far: ${m.people}.</p>`;
   } else {
     html += `<div class="bigline">${pct(m.acc)}</div><p>${m.right} of ${m.n} right across ${m.people} people. Chance of doing this well by luck: ${m.p < 0.001 ? "under 0.1%" : pct(m.p)}.</p><p><b>${verdictText(m)}</b></p>`;
   }
@@ -493,11 +493,11 @@ async function renderLab() {
     rep.signals.forEach(s => {
       html += `<span>${esc(s.label)}</span><span class="dir">${s.d > 0 ? "higher" : "lower"} when lying · ${Math.abs(s.d).toFixed(2)}</span>`;
     });
-    html += `</div><p class="hint">Tell checks more than 100 measurements, so a few will look different by luck alone. Treat these as leads to test, not findings.</p></div>`;
+    html += `</div><p class="hint">TruthPulse checks more than 100 measurements, so a few will look different by luck alone. Treat these as leads to test, not findings.</p></div>`;
   }
 
   html += `<div class="panel"><h3>How to read this</h3>
-    <p>Each person is compared against their own normal face, so someone who always blinks a lot doesn't look like a liar. Tell is graded only on people it didn't learn from, which is the test that has tripped up earlier lie-detection research.</p>
+    <p>Each person is compared against their own normal face, so someone who always blinks a lot doesn't look like a liar. TruthPulse is graded only on people it didn't learn from, which is the test that has tripped up earlier lie-detection research.</p>
     <p>To trust a result you'll want a few hundred answers from at least 10 to 20 different people.</p></div>`;
   body.innerHTML = html;
 }
