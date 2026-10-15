@@ -137,6 +137,28 @@
     </section>
   </main>
 </div>
+<div id="diag" hidden style="position:fixed;left:12px;right:12px;bottom:12px;z-index:99;background:#c32d39;color:#fff;padding:12px 14px;border-radius:12px;font:13px/1.45 ui-monospace,Menlo,monospace;white-space:pre-wrap;max-height:45vh;overflow:auto"></div>
+<script>
+// Shows any startup or runtime problem on screen so a screenshot is enough to diagnose it.
+(function () {
+  var box = document.getElementById("diag");
+  window.__report = function (msg) {
+    box.hidden = false;
+    box.textContent += (box.textContent ? "\n" : "Something went wrong. Please screenshot this:\n") + msg;
+  };
+  window.addEventListener("error", function (e) {
+    var t = e.target;
+    if (t && t !== window && (t.src || t.href)) window.__report("Couldn't load " + (t.src || t.href));
+    else window.__report((e.message || "Error") + (e.filename ? " (" + e.filename.split("/").pop() + ":" + e.lineno + ")" : ""));
+  }, true);
+  window.addEventListener("unhandledrejection", function (e) {
+    var r = e.reason; window.__report("Unhandled: " + (r && (r.name ? r.name + ": " : "") + (r.message || r)));
+  });
+  setTimeout(function () {
+    if (!window.__appStarted) window.__report("The app didn't start after 8 seconds.\nBrowser: " + navigator.userAgent + "\nSecure page: " + window.isSecureContext + "\nModules supported: " + ("noModule" in document.createElement("script")) + "\nWebAssembly: " + (typeof WebAssembly));
+  }, 8000);
+})();
+</script>
 <script type="module" src="app.js"></script>
 </body>
 </html>

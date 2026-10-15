@@ -281,6 +281,7 @@ $("camBtn").onclick = async () => {
     msg.textContent = "Make sure the answerer's face shows \"Face found\" before you begin.";
   } catch (e) {
     console.error(e);
+    if (window.__report) window.__report("Camera/face tracking: " + (e && e.name ? e.name + ": " : "") + (e && e.message ? e.message : e));
     btn.disabled = false;
     msg.textContent = e && e.name === "NotAllowedError"
       ? "Camera access was blocked. In iPhone Settings, go to Safari, then Camera, and choose Allow. Then tap Turn on camera again."
@@ -502,4 +503,5 @@ async function renderLab() {
   body.innerHTML = html;
 }
 
+window.__appStarted = true;
 renderHome();
